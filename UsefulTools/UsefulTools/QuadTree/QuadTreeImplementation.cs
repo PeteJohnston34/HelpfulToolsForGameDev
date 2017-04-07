@@ -33,6 +33,12 @@ namespace UsefulTools.QuadTree
             _root.add(entity);
         }
 
+        public override void remove(T entity)
+        {
+            IHasRect entityRect = (IHasRect)entity;
+            if (entityRect.Rect.Intersects(Rect)) { _root.remove(entity); }
+        }
+
         public override void print(string indent = "")
         {
             Console.WriteLine("Tree Contents:");
@@ -43,5 +49,7 @@ namespace UsefulTools.QuadTree
         {
             return _root.queryArea(areaToQuery, new List<T>());
         }
+
+        public override void checkChildren() {}
     }
 }

@@ -12,7 +12,9 @@ namespace UsefulTools.QuadTree
         public abstract Rectangle Rect { get; }
 
         public abstract void add(T entity);
+        public abstract void remove(T entity);
         public abstract void print(string indent);
         public abstract List<T> queryArea(Rectangle areaToQuery, List<T> entitiesFound);
+        public abstract void checkChildren();
     }
 }

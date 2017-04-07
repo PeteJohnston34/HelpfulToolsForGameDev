@@ -6,6 +6,8 @@ namespace UsefulTools.QuadTree
 {
     class StandardNode<T> : Node<T>
     {
+        private static int QUADS = 4;
+
         //Members
         private StandardNode<T>[] _children; //Quadrants are organized in the following order: {Nw, Ne, Sw, Se}
         private Node<T> _parent;
@@ -13,17 +15,19 @@ namespace UsefulTools.QuadTree
         private T _entity;
 
         //Properties
-        public bool HasChildren { get; set; }
-        public bool HasEntity { get { return _entity != null; } }
+        public bool HasChildren { get; private set; }
+        public bool HasEntity { get; private set; }
         public override Rectangle Rect { get { return _rectangle; } }
 
         //Constructor
         public StandardNode(Rectangle rectangle, Node<T> parent)
         {
-            _children = new StandardNode<T>[4];
+            _children = new StandardNode<T>[QUADS];
             _parent = parent;
             _rectangle = rectangle;
+            _entity = default(T);
             HasChildren = false;
+            HasEntity = false;
         }
 
         //Public Methods
@@ -32,13 +36,15 @@ namespace UsefulTools.QuadTree
             if (!HasEntity)
             {
                 _entity = entity;
+                HasEntity = true;
             }
             else
             {
                 if (!HasChildren) { createChildren(); }
+
                 IHasRect entityRect = (IHasRect)entity;
 
-                for (int i = 0; i < _children.Length; i++)
+                for (int i = 0; i < QUADS; i++)
                 {
                     if(_children[i]._rectangle.Intersects(entityRect.Rect))
                     {
@@ -49,6 +55,29 @@ namespace UsefulTools.QuadTree
             }
         }
 
+        public override void remove(T entity)
+        {
+            if (EqualityComparer<T>.Default.Equals(entity, _entity))
+            {
+                _entity = default(T);
+                HasEntity = false;
+                _parent.checkChildren();
+                return;
+            }
+            
+            if (!HasChildren) { return; }
+            
+            IHasRect entityRect = (IHasRect)entity;
+            for (int i = 0; i < QUADS; i++)
+            {
+                if (HasChildren && _children[i].Rect.Intersects(entityRect.Rect))
+                {
+                    _children[i].remove(entity);
+                }
+            }
+            
+        }
+
         public override void print(string indent)
         {
             Console.WriteLine(indent + ToString());
@@ -56,7 +85,7 @@ namespace UsefulTools.QuadTree
             if (HasChildren)
             {
                 indent += " - ";
-                for (int i = 0; i < _children.Length; i++)
+                for (int i = 0; i < QUADS; i++)
                 {
                     _children[i].print(indent);
                 }
@@ -78,7 +107,7 @@ namespace UsefulTools.QuadTree
             //Check child nodes for intersection, and query them if so.
             if (HasChildren)
             {
-                for (int i = 0; i < _children.Length; i++)
+                for (int i = 0; i < QUADS; i++)
                 {
 
                     if (areaToQuery.Intersects(_children[i].Rect))
@@ -88,6 +117,29 @@ namespace UsefulTools.QuadTree
                 }
             }
             return entitiesFound;
+        }
+
+        //If each child node is empty of children and entities, _children is reinitialized
+        public override void checkChildren()
+        {
+            bool empty = true;
+            for (int i = 0; i < QUADS; i++)
+            {
+                if (_children[i].HasEntity || _children[i].HasChildren)
+                {
+                    empty = false;
+                    break;
+                }
+            }
+
+            if(empty)
+            {
+                HasChildren = false;
+                for (int i = 0; i < QUADS; i++)
+                {
+                    _children[i] = null;
+                }
+            }
         }
 
         public override string ToString()
@@ -104,6 +156,7 @@ namespace UsefulTools.QuadTree
         }
 
         //Private Methods
+
         private void createChildren()
         {
             HasChildren = true;
