@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace UsefulTools.QuadTree
 {
@@ -36,6 +37,11 @@ namespace UsefulTools.QuadTree
         {
             Console.WriteLine("Tree Contents:");
             _root.print(indent);
+        }
+
+        public override List<T> queryArea(Rectangle areaToQuery, List<T> entitiesFound = null)
+        {
+            return _root.queryArea(areaToQuery, new List<T>());
         }
     }
 }

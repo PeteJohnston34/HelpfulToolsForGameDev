@@ -13,5 +13,6 @@ namespace UsefulTools.QuadTree
 
         public abstract void add(T entity);
         public abstract void print(string indent);
+        public abstract List<T> queryArea(Rectangle areaToQuery, List<T> entitiesFound);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace UsefulTools.QuadTree
 {
@@ -62,6 +63,33 @@ namespace UsefulTools.QuadTree
             }
         }
 
+        public override List<T> queryArea(Rectangle areaToQuery, List<T> entitiesFound)
+        {
+            //Check for instersection with entity if one is held in this node
+            if (HasEntity)
+            {
+                IHasRect rectEntity = (IHasRect)_entity;
+                if (areaToQuery.Intersects(rectEntity.Rect))
+                {
+                    entitiesFound.Add(_entity);
+                }
+            }
+
+            //Check child nodes for intersection, and query them if so.
+            if (HasChildren)
+            {
+                for (int i = 0; i < _children.Length; i++)
+                {
+
+                    if (areaToQuery.Intersects(_children[i].Rect))
+                    {
+                        entitiesFound = _children[i].queryArea(areaToQuery, entitiesFound);
+                    }
+                }
+            }
+            return entitiesFound;
+        }
+
         public override string ToString()
         {
             string s = "";
@@ -80,6 +108,7 @@ namespace UsefulTools.QuadTree
         {
             HasChildren = true;
 
+            //Divide the Node's rectangle into 4 quadrants           
             Point size = new Point(_rectangle.Width / 2, _rectangle.Height / 2);
             Rectangle nwRect = new Rectangle(_rectangle.Location, size);
             Rectangle neRect = new Rectangle(new Point(_rectangle.Center.X, _rectangle.Location.Y), size);
