@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using UsefulTools.AxisAlignedBoundingBox;
 
 namespace UsefulTools.QuadTree
 {
-    public abstract class Node<T> : IHasRect
+    public abstract class Node<T> : IHasAABB2D
     {
-        public abstract Rectangle Rect { get; }
+        public abstract AABB2D BoundingBox{ get; }
 
         public abstract void add(T entity);
         public abstract void remove(T entity);
         public abstract void print(string indent);
-        public abstract List<T> queryArea(Rectangle areaToQuery, List<T> entitiesFound);
+        public abstract List<T> queryArea(AABB2D areaToQuery, List<T> entitiesFound);
         public abstract void checkChildren();
     }
 }

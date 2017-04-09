@@ -1,18 +1,17 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using UsefulTools.AxisAlignedBoundingBox;
 using UsefulTools.QuadTree;
 
 namespace UsefulTools.Test
 {
-    public class Entity : IHasRect
+    public class Entity : IHasAABB2D
     {
-        private Rectangle _rectangle;
+        private AABB2D _boundingBox;
 
-        public Rectangle Rect { get { return _rectangle; } }
+        public AABB2D BoundingBox { get { return _boundingBox; } }
 
-        public Entity(Rectangle rectangle)
+        public Entity(AABB2D boundingBox)
         {
-            _rectangle = rectangle;
+            _boundingBox = boundingBox;
         }
     }
 }

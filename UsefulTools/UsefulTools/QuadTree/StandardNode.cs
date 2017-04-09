@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using UsefulTools.AxisAlignedBoundingBox;
 
 namespace UsefulTools.QuadTree
 {
@@ -11,20 +11,20 @@ namespace UsefulTools.QuadTree
         //Members
         private StandardNode<T>[] _children; //Quadrants are organized in the following order: {Nw, Ne, Sw, Se}
         private Node<T> _parent;
-        private Rectangle _rectangle;
+        private AABB2D _boundingBox;
         private T _entity;
 
         //Properties
         public bool HasChildren { get; private set; }
         public bool HasEntity { get; private set; }
-        public override Rectangle Rect { get { return _rectangle; } }
+        public override AABB2D BoundingBox { get { return _boundingBox; } }
 
         //Constructor
-        public StandardNode(Rectangle rectangle, Node<T> parent)
+        public StandardNode(AABB2D boundingBox, Node<T> parent)
         {
             _children = new StandardNode<T>[QUADS];
             _parent = parent;
-            _rectangle = rectangle;
+            _boundingBox = boundingBox;
             _entity = default(T);
             HasChildren = false;
             HasEntity = false;
@@ -42,11 +42,11 @@ namespace UsefulTools.QuadTree
             {
                 if (!HasChildren) { createChildren(); }
 
-                IHasRect entityRect = (IHasRect)entity;
+                IHasAABB2D entityRect = (IHasAABB2D)entity;
 
                 for (int i = 0; i < QUADS; i++)
                 {
-                    if(_children[i]._rectangle.Intersects(entityRect.Rect))
+                    if(_children[i].BoundingBox.intersects(entityRect.BoundingBox))
                     {
                         _children[i].add(entity);
                         break;
@@ -67,10 +67,10 @@ namespace UsefulTools.QuadTree
             
             if (!HasChildren) { return; }
             
-            IHasRect entityRect = (IHasRect)entity;
+            IHasAABB2D entityRect = (IHasAABB2D)entity;
             for (int i = 0; i < QUADS; i++)
             {
-                if (HasChildren && _children[i].Rect.Intersects(entityRect.Rect))
+                if (HasChildren && _children[i].BoundingBox.intersects(entityRect.BoundingBox))
                 {
                     _children[i].remove(entity);
                 }
@@ -92,13 +92,13 @@ namespace UsefulTools.QuadTree
             }
         }
 
-        public override List<T> queryArea(Rectangle areaToQuery, List<T> entitiesFound)
+        public override List<T> queryArea(AABB2D areaToQuery, List<T> entitiesFound)
         {
             //Check for instersection with entity if one is held in this node
             if (HasEntity)
             {
-                IHasRect rectEntity = (IHasRect)_entity;
-                if (areaToQuery.Intersects(rectEntity.Rect))
+                IHasAABB2D rectEntity = (IHasAABB2D)_entity;
+                if (areaToQuery.intersects(rectEntity.BoundingBox))
                 {
                     entitiesFound.Add(_entity);
                 }
@@ -110,7 +110,7 @@ namespace UsefulTools.QuadTree
                 for (int i = 0; i < QUADS; i++)
                 {
 
-                    if (areaToQuery.Intersects(_children[i].Rect))
+                    if (areaToQuery.intersects(_children[i].BoundingBox))
                     {
                         entitiesFound = _children[i].queryArea(areaToQuery, entitiesFound);
                     }
@@ -150,7 +150,7 @@ namespace UsefulTools.QuadTree
                 s += ("Entity # " + _entity.GetHashCode() + " ");
             }
 
-            s += ("Quad Rectangle: " + _rectangle.ToString());
+            s += ("Quad Rectangle: " + _boundingBox.ToString());
 
             return s;
         }
@@ -161,12 +161,13 @@ namespace UsefulTools.QuadTree
         {
             HasChildren = true;
 
-            //Divide the Node's rectangle into 4 quadrants           
-            Point size = new Point(_rectangle.Width / 2, _rectangle.Height / 2);
-            Rectangle nwRect = new Rectangle(_rectangle.Location, size);
-            Rectangle neRect = new Rectangle(new Point(_rectangle.Center.X, _rectangle.Location.Y), size);
-            Rectangle swRect = new Rectangle(new Point(_rectangle.Location.X, _rectangle.Center.Y), size);
-            Rectangle seRect = new Rectangle(_rectangle.Center, size);
+            //Divide the Node's bounding box into 4 quadrants           
+            int sizeX = _boundingBox.Width / 2;
+            int sizeY = _boundingBox.Height / 2;
+            AABB2D nwRect = new AABB2D(_boundingBox.X, _boundingBox.Y, sizeX, sizeY);
+            AABB2D neRect = new AABB2D(_boundingBox.CenterX, _boundingBox.Y, sizeX, sizeY);
+            AABB2D swRect = new AABB2D(_boundingBox.X, _boundingBox.CenterY, sizeX, sizeY);
+            AABB2D seRect = new AABB2D(_boundingBox.CenterX, _boundingBox.CenterY, sizeX, sizeY);
 
             _children[0] = new StandardNode<T>(nwRect, this);
             _children[1] = new StandardNode<T>(neRect, this);

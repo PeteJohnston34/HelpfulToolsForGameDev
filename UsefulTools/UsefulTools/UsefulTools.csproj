@@ -38,12 +38,13 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AxisAlignedBoundingBox\AABB2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QuadTree\IHasRect.cs" />
+    <Compile Include="QuadTree\IHasAABB2D.cs" />
     <Compile Include="QuadTree\Node.cs" />
     <Compile Include="QuadTree\StandardNode.cs" />
-    <Compile Include="QuadTree\QuadTreeImplementation.cs" />
-    <Compile Include="QuadTree\TypeWithoutRectangleException.cs" />
+    <Compile Include="QuadTree\QuadTreeAABBImplementation.cs" />
+    <Compile Include="QuadTree\TypeWithoutAABBException.cs" />
     <Compile Include="Test\Entity.cs" />
     <Compile Include="Test\TestProgram.cs" />
   </ItemGroup>

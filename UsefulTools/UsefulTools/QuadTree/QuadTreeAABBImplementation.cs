@@ -1,30 +1,31 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using UsefulTools.AxisAlignedBoundingBox;
 
 namespace UsefulTools.QuadTree
 {
     //A QuadTree Implementation for use with Monogame.
     //Type T must implement IHasRect
-    public class QuadTreeImplementation<T> : Node<T>
+    public class QuadTreeAABBImplementation<T> : Node<T>
     {
         //members
         private StandardNode<T> _root;
-        private Rectangle _rectangle;
+        private AABB2D __boundingBox;
 
         //properties
-        public override Rectangle Rect { get { return _rectangle; } }
+        public override AABB2D BoundingBox { get { return __boundingBox; } }
 
         //constructor
-        public QuadTreeImplementation(Rectangle rectangle)
+        public QuadTreeAABBImplementation(AABB2D area)
         {
-            if (!typeof(IHasRect).IsAssignableFrom(typeof(T)))
+            if (!typeof(IHasAABB2D).IsAssignableFrom(typeof(T)))
             {
-                throw new TypeWithoutRectangleException();
+                throw new TypeWithoutAABBException();
             }
 
-            _rectangle = rectangle;
-            _root = new StandardNode<T>(rectangle, this);
+            __boundingBox = area;
+            _root = new StandardNode<T>(area, this);
         }
 
         //public methods
@@ -35,8 +36,8 @@ namespace UsefulTools.QuadTree
 
         public override void remove(T entity)
         {
-            IHasRect entityRect = (IHasRect)entity;
-            if (entityRect.Rect.Intersects(Rect)) { _root.remove(entity); }
+            IHasAABB2D entityRect = (IHasAABB2D)entity;
+            if (entityRect.BoundingBox.intersects(BoundingBox)) { _root.remove(entity); }
         }
 
         public override void print(string indent = "")
@@ -45,7 +46,7 @@ namespace UsefulTools.QuadTree
             _root.print(indent);
         }
 
-        public override List<T> queryArea(Rectangle areaToQuery, List<T> entitiesFound = null)
+        public override List<T> queryArea(AABB2D areaToQuery, List<T> entitiesFound = null)
         {
             return _root.queryArea(areaToQuery, new List<T>());
         }
