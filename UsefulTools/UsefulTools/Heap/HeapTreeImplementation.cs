@@ -15,6 +15,7 @@ namespace UsefulTools.Heap
         public static HeapPriorityType PriorityType { get { return _priorityType; } }
         public int Level { get { return (int)Math.Floor(Math.Log(_nodeCount) / Math.Log(2)); } }
         public int Offset { get { return (int)(_nodeCount - (Math.Pow(2, Level) - 1)); } }
+        public bool IsEmpty { get { return _rootNode == null; } }
 
         //constructor
         public HeapTreeImplementation(HeapPriorityType priorityType)
@@ -43,6 +44,7 @@ namespace UsefulTools.Heap
             if (Level == 0)
             {
                 _rootNode = null;
+                _nodeCount = 0;
                 return element;
             }
 
@@ -53,13 +55,14 @@ namespace UsefulTools.Heap
             //Decrement nodecount after pop() but before heapDown()
             _nodeCount--;
 
-            heapDown(Level);
+            heapDown();
+
             return element;
         }
 
-        public void heapDown(int level)
+        public void heapDown()
         {
-            _rootNode.heapDown(level);
+            _rootNode.heapDown(Level);
         }
 
         public T peek()

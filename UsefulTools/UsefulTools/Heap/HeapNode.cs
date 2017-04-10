@@ -44,7 +44,7 @@ namespace UsefulTools.Heap
                     if (right)
                     {
                         _rightChild = new HeapNode<K, T>(this);
-                        _rightChild.push(key, element, level - 1, offset);
+                        _rightChild.push(key, element, level - 1, offset - 1);
                     }
                     else
                     {
@@ -55,7 +55,7 @@ namespace UsefulTools.Heap
                 default:
                     if (right)
                     {
-                        _rightChild.push(key, element, level - 1, offset);
+                        _rightChild.push(key, element, level - 1, offset - (int)Math.Pow(2, level - 1));
                     }
                     else
                     {
@@ -69,140 +69,118 @@ namespace UsefulTools.Heap
         {
             bool right = offset > Math.Pow(2, level) / 2;
 
-            if (level == 0)
+            switch (level)
             {
-                return this;
-            }
-
-            if (level == 1)
-            {
-                if (right)
-                {
-                    HeapNode<K, T> tempNode = _rightChild;
-                    _rightChild = null;
-                    return tempNode;
-                }
-                else
-                {
-                    HeapNode<K, T> tempNode = _leftChild;
-                    _leftChild = null;
-                    return tempNode;
-                }
-            }
-            else
-            {
-                return right ? _rightChild.pop(level - 1, offset) : _leftChild.pop(level - 1, offset);
-            }
+                case 0:
+                    return this;
+                case 1:
+                    if (right)
+                    {
+                        HeapNode<K, T> tempNode = _rightChild;
+                        _rightChild = null;
+                        return tempNode;
+                    }
+                    else
+                    {
+                        HeapNode<K, T> tempNode = _leftChild;
+                        _leftChild = null;
+                        return tempNode;
+                    }
+                default:
+                    return right ? _rightChild.pop(level - 1, offset - (int)Math.Pow(2, level - 1)) : _leftChild.pop(level - 1, offset);
+            }           
         }
 
         public void heapUp()
         {
             if (_parent == null) { return; }
 
-            IComparable thisCompKey = (IComparable)_key;
+            IComparable thisCompKey = (IComparable)Key;
             IComparable parentCompKey = (IComparable)_parent.Key;
 
-            if (HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MaxHeap)
+            if (HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MaxHeap &&
+                    parentCompKey.CompareTo(thisCompKey) < 0 ||
+                    HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MinHeap &&
+                    parentCompKey.CompareTo(thisCompKey) > 0)
             {
-                if (parentCompKey.CompareTo(thisCompKey) < 0)
-                {
-                    T tempElement = _parent.Element;
-                    K tempKey = _parent.Key;
-
-                    _parent.Element = Element;
-                    _parent.Key = Key;
-
-                    Element = tempElement;
-                    Key = tempKey;
-
-                    _parent.heapUp();
-                }
-            }
-            else
-            {
-                if (parentCompKey.CompareTo(thisCompKey) > 0)
-                {
-                    T tempElement = _parent.Element;
-                    K tempKey = _parent.Key;
-
-                    _parent.Element = Element;
-                    _parent.Key = Key;
-
-                    Element = tempElement;
-                    Key = tempKey;
-
-                    _parent.heapUp();
-                }
+                swap(this, _parent);
+                _parent.heapUp();                
             }
         }
 
         public void heapDown(int level)
         {
             IComparable thisKey = (IComparable)Key;
+
+            if (level == 0)
+            {
+                return;
+            }
             if (level == 1)
             {
-                if (_leftChild == null && _rightChild == null) { return; }
-                if (_leftChild == null)
+                if (_leftChild == null && _rightChild == null)
                 {
-                    heapDownRight(thisKey);
                     return;
                 }
                 if (_rightChild == null)
                 {
-                    heapDownLeft(thisKey);
-                    return;
+                    heapDownLeft(thisKey, level);
+                    return;                    
                 }
             }
-
+            
             IComparable leftKey = (IComparable)_leftChild.Key;
             IComparable rightKey = (IComparable)_rightChild.Key;
 
             if (HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MaxHeap && leftKey.CompareTo(rightKey) > 0 ||
                 HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MinHeap && leftKey.CompareTo(rightKey) < 0)
             {
-                heapDownLeft(thisKey);
+                heapDownLeft(thisKey, level);
             }
             else
             {
-                heapDownRight(thisKey);
+                heapDownRight(thisKey, level);
             }
         }
 
-        private void heapDownLeft(IComparable thisKey)
+        //private methods
+        private void heapDownLeft(IComparable thisKey, int level)
         {
             IComparable leftKey = (IComparable)_leftChild.Key;
 
             if (HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MaxHeap && thisKey.CompareTo(leftKey) < 0 ||
                 HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MinHeap && thisKey.CompareTo(leftKey) > 0)
             {
-                T tempElement = _leftChild.Element;
-                K tempKey = _leftChild.Key;
+                swap(this, _leftChild);
 
-                _leftChild.Element = Element;
-                _leftChild.Key = Key;
-
-                Element = tempElement;
-                Key = tempKey;
+                _leftChild.heapDown(level - 1);
             }
 
         }
 
-        private void heapDownRight(IComparable thisKey)
+        private void heapDownRight(IComparable thisKey, int level)
         {
             IComparable rightKey = (IComparable)_rightChild.Key;
 
             if (HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MaxHeap && thisKey.CompareTo(rightKey) < 0 ||
-    HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MinHeap && thisKey.CompareTo(rightKey) > 0)
+                HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MinHeap && thisKey.CompareTo(rightKey) > 0)
             {
-                T tempElement = _rightChild.Element;
-                K tempKey = _rightChild.Key;
-
-                _rightChild.Element = Element;
-                _rightChild.Key = Key;
-
-                Element = tempElement;
-                Key = tempKey;
+                swap(this, _rightChild);
+                
+                _rightChild.heapDown(level - 1);
             }
+        }
+
+        private void swap(HeapNode<K, T> node1, HeapNode<K, T> node2)
+        {
+            T tempElement = node1.Element;
+            K tempKey = node1.Key;
+
+            node1.Element = node2.Element;
+            node1.Key = node2.Key;
+
+            node2.Element = tempElement;
+            node2.Key = tempKey;
         }
     }
 }

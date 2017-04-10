@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UsefulTools.AxisAlignedBoundingBox;
+using UsefulTools.Heap;
 using UsefulTools.QuadTree;
 
 namespace UsefulTools.Test
@@ -9,57 +10,91 @@ namespace UsefulTools.Test
     {
         public static int Main(string[] args)
         {
-            QuadTreeAABBImplementation<Entity> testTree1 = new QuadTreeAABBImplementation<Entity>(new AABB2D(0, 0, 640, 480));
+            //test quadtree
+            //QuadTreeAABBImplementation<Entity> testTree1 = new QuadTreeAABBImplementation<Entity>(new AABB2D(0, 0, 640, 480));
             Random random = new Random();
-            //for (int i = 0; i < 50; i++)
+
+            //Entity entity1 = new Entity(new AABB2D(10, 10, 16, 16));
+            //Entity entity2 = new Entity(new AABB2D(20, 20, 16, 16));
+            //Entity entity3 = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 16, 16));
+            //Entity entity4 = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 16, 16));
+            //Entity entity5 = new Entity(new AABB2D(300, 200, 16, 16));
+            //Entity entity6 = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 16, 16));
+            //Entity entity7 = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 16, 16));
+            //Entity entity8 = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 16, 16));
+            //Entity entity9 = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 16, 16));
+            //Entity entity10 = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 16, 16));
+
+            //testTree1.add(entity1);
+            //testTree1.add(entity2);
+            //testTree1.add(entity3);
+            //testTree1.add(entity4);
+            //testTree1.add(entity5);
+            //testTree1.add(entity6);
+            //testTree1.add(entity7);
+            //testTree1.add(entity8);
+            //testTree1.add(entity9);
+            //testTree1.add(entity10);
+
+            //testTree1.print();
+
+            //testTree1.remove(entity4);
+            //testTree1.remove(entity3);
+            //testTree1.remove(entity10);
+            //testTree1.remove(entity8);
+            //testTree1.remove(entity6);
+            //testTree1.remove(entity7);
+            //testTree1.remove(entity9);
+
+            //testTree1.print();
+
+            //List<Entity> entities = testTree1.queryArea(new AABB2D(0, 0, 100, 100));
+            //int index = 0;
+
+            //entities.ForEach(e =>
             //{
-            //    testTree1.add(new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 16, 16)));
-            //}
+            //    Console.Write(index + " - " + e.ToString() + " Rectangle: ");
+            //    IHasAABB2D eRect = (IHasAABB2D)e;
+            //    Console.WriteLine(eRect.BoundingBox.ToString());
+            //    index++;
+            //});
 
-            Entity entity1 = new Entity(new AABB2D(10, 10, 16, 16));
-            Entity entity2 = new Entity(new AABB2D(20, 20, 16, 16));
-            Entity entity3 = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 16, 16));
-            Entity entity4 = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 16, 16));
-            Entity entity5 = new Entity(new AABB2D(300, 200, 16, 16));
-            Entity entity6 = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 16, 16));
-            Entity entity7 = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 16, 16));
-            Entity entity8 = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 16, 16));
-            Entity entity9 = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 16, 16));
-            Entity entity10 = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 16, 16));
+            //Test Heap
 
-            testTree1.add(entity1);
-            testTree1.add(entity2);
-            testTree1.add(entity3);
-            testTree1.add(entity4);
-            testTree1.add(entity5);
-            testTree1.add(entity6);
-            testTree1.add(entity7);
-            testTree1.add(entity8);
-            testTree1.add(entity9);
-            testTree1.add(entity10);
+            HeapTreeImplementation<int, Entity> testHeap = new HeapTreeImplementation<int, Entity>(HeapPriorityType.MaxHeap);
+            Entity[] testEntities = new Entity[10];
 
-            testTree1.print();
-
-            testTree1.remove(entity4);
-            testTree1.remove(entity3);
-            testTree1.remove(entity10);
-            testTree1.remove(entity8);
-            testTree1.remove(entity6);
-            testTree1.remove(entity7);
-            testTree1.remove(entity9);
-
-            testTree1.print();
-
-            List<Entity> entities = testTree1.queryArea(new AABB2D(0, 0, 100, 100));
-            int index = 0;
-
-            entities.ForEach(e =>
+            Console.WriteLine("Adding 10 Entities.....");
+            for (int i = 0; i < 10; i++)
             {
-                Console.Write(index + " - " + e.ToString() + " Rectangle: ");
-                IHasAABB2D eRect = (IHasAABB2D)e;
-                Console.WriteLine(eRect.BoundingBox.ToString());
-                index++;
-            });
+                testEntities[i] = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 32, 32));
+                Console.WriteLine(testEntities[i].BoundingBox.X);
+                testHeap.push(testEntities[i].BoundingBox.X, testEntities[i]);
+            }
+
+            Console.WriteLine(testHeap.peek().BoundingBox.X);
+
+            Console.WriteLine("Popping 5....");
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine(testHeap.pop().BoundingBox.X);
+            }
+
+            Entity[] testEntities2 = new Entity[20];
+            Console.WriteLine("Adding 20 entities.....");
+            for (int i = 0; i < 20; i++)
+            {
+                testEntities2[i] = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 32, 32));
+                Console.WriteLine(testEntities2[i].BoundingBox.X);
+                testHeap.push(testEntities2[i].BoundingBox.X, testEntities2[i]);
+            }
+
+            Console.WriteLine("Emptying....");
+            while (!testHeap.IsEmpty)
+            {
+                Console.WriteLine(testHeap.pop().BoundingBox.X);
+            }
+
             return 0;
         }
     }
