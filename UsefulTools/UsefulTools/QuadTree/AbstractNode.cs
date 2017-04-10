@@ -3,7 +3,7 @@ using UsefulTools.AxisAlignedBoundingBox;
 
 namespace UsefulTools.QuadTree
 {
-    public abstract class Node<T> : IHasAABB2D
+    public abstract class AbstractNode<T> : IHasAABB2D
     {
         public abstract AABB2D BoundingBox{ get; }
 

@@ -4,13 +4,13 @@ using UsefulTools.AxisAlignedBoundingBox;
 
 namespace UsefulTools.QuadTree
 {
-    class StandardNode<T> : Node<T>
+    class QuadNode<T> : AbstractNode<T>
     {
         private static int QUADS = 4;
 
         //Members
-        private StandardNode<T>[] _children; //Quadrants are organized in the following order: {Nw, Ne, Sw, Se}
-        private Node<T> _parent;
+        private QuadNode<T>[] _children; //Quadrants are organized in the following order: {Nw, Ne, Sw, Se}
+        private AbstractNode<T> _parent;
         private AABB2D _boundingBox;
         private T _entity;
 
@@ -20,9 +20,9 @@ namespace UsefulTools.QuadTree
         public override AABB2D BoundingBox { get { return _boundingBox; } }
 
         //Constructor
-        public StandardNode(AABB2D boundingBox, Node<T> parent)
+        public QuadNode(AABB2D boundingBox, AbstractNode<T> parent)
         {
-            _children = new StandardNode<T>[QUADS];
+            _children = new QuadNode<T>[QUADS];
             _parent = parent;
             _boundingBox = boundingBox;
             _entity = default(T);
@@ -169,10 +169,10 @@ namespace UsefulTools.QuadTree
             AABB2D swRect = new AABB2D(_boundingBox.X, _boundingBox.CenterY, sizeX, sizeY);
             AABB2D seRect = new AABB2D(_boundingBox.CenterX, _boundingBox.CenterY, sizeX, sizeY);
 
-            _children[0] = new StandardNode<T>(nwRect, this);
-            _children[1] = new StandardNode<T>(neRect, this);
-            _children[2] = new StandardNode<T>(swRect, this);
-            _children[3] = new StandardNode<T>(seRect, this);
+            _children[0] = new QuadNode<T>(nwRect, this);
+            _children[1] = new QuadNode<T>(neRect, this);
+            _children[2] = new QuadNode<T>(swRect, this);
+            _children[3] = new QuadNode<T>(seRect, this);
         }
     }
 }

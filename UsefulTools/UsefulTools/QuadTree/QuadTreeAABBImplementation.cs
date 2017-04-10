@@ -6,10 +6,10 @@ namespace UsefulTools.QuadTree
 {
     //A QuadTree Implementation for use with Monogame.
     //Type T must implement IHasRect
-    public class QuadTreeAABBImplementation<T> : Node<T>
+    public class QuadTreeAABBImplementation<T> : AbstractNode<T>
     {
         //members
-        private StandardNode<T> _root;
+        private QuadNode<T> _root;
         private AABB2D __boundingBox;
 
         //properties
@@ -24,7 +24,7 @@ namespace UsefulTools.QuadTree
             }
 
             __boundingBox = area;
-            _root = new StandardNode<T>(area, this);
+            _root = new QuadNode<T>(area, this);
         }
 
         //public methods
