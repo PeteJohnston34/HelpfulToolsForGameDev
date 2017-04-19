@@ -48,6 +48,7 @@
     <Compile Include="QuadTree\QuadNode.cs" />
     <Compile Include="QuadTree\QuadTreeAABBImplementation.cs" />
     <Compile Include="QuadTree\TypeWithoutAABBException.cs" />
+    <Compile Include="SearchingAndSorting\SearchingAlgorithms.cs" />
     <Compile Include="Test\Entity.cs" />
     <Compile Include="Test\TestProgram.cs" />
   </ItemGroup>

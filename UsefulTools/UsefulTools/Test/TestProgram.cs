@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UsefulTools.AxisAlignedBoundingBox;
 using UsefulTools.Heap;
 using UsefulTools.QuadTree;
+using UsefulTools.SearchingAndSorting;
 
 namespace UsefulTools.Test
 {
@@ -61,39 +62,72 @@ namespace UsefulTools.Test
 
             //Test Heap
 
-            HeapTreeImplementation<int, Entity> testHeap = new HeapTreeImplementation<int, Entity>(HeapPriorityType.MaxHeap);
-            Entity[] testEntities = new Entity[10];
+            //HeapTreeImplementation<int, Entity> testHeap = new HeapTreeImplementation<int, Entity>(HeapPriorityType.MaxHeap);
+            //Entity[] testEntities = new Entity[10];
 
-            Console.WriteLine("Adding 10 Entities.....");
-            for (int i = 0; i < 10; i++)
+            //Console.WriteLine("Adding 10 Entities.....");
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    testEntities[i] = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 32, 32));
+            //    Console.WriteLine(testEntities[i].BoundingBox.X);
+            //    testHeap.push(testEntities[i].BoundingBox.X, testEntities[i]);
+            //}
+
+            //Console.WriteLine(testHeap.peek().BoundingBox.X);
+
+            //Console.WriteLine("Popping 5....");
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    Console.WriteLine(testHeap.pop().BoundingBox.X);
+            //}
+
+            //Entity[] testEntities2 = new Entity[20];
+            //Console.WriteLine("Adding 20 entities.....");
+            //for (int i = 0; i < 20; i++)
+            //{
+            //    testEntities2[i] = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 32, 32));
+            //    Console.WriteLine(testEntities2[i].BoundingBox.X);
+            //    testHeap.push(testEntities2[i].BoundingBox.X, testEntities2[i]);
+            //}
+
+            //Console.WriteLine("Emptying....");
+            //while (!testHeap.IsEmpty)
+            //{
+            //    Console.WriteLine(testHeap.pop().BoundingBox.X);
+            //}
+
+
+
+            int[] testArray = new int[] {
+                1, 4, 15, 28, 35, 78, 105, 119, 149, 209,
+                215, 289, 301, 345, 372, 390, 498, 501, 589, 687,
+                690, 703, 756, 767, 789, 834, 897, 903, 956, 999
+            };
+
+            double[] testArrayDbl = new double[30];
+
+            for (int i = 0; i < 30; i++)
             {
-                testEntities[i] = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 32, 32));
-                Console.WriteLine(testEntities[i].BoundingBox.X);
-                testHeap.push(testEntities[i].BoundingBox.X, testEntities[i]);
+                testArrayDbl[i] = (double)testArray[i];
             }
 
-            Console.WriteLine(testHeap.peek().BoundingBox.X);
+            int result = SearchingAlgorithms.BinarySearch(989, testArray);
+            Console.WriteLine(result);
+            result = SearchingAlgorithms.BinarySearch(15, testArray);
+            Console.WriteLine(result + ", " + testArray[result]);
+            result = SearchingAlgorithms.BinarySearch(29, testArray);
+            Console.WriteLine(result);
+            result = SearchingAlgorithms.BinarySearch(390, testArray);
+            Console.WriteLine(result + ", " + testArray[result]);
 
-            Console.WriteLine("Popping 5....");
-            for (int i = 0; i < 5; i++)
-            {
-                Console.WriteLine(testHeap.pop().BoundingBox.X);
-            }
-
-            Entity[] testEntities2 = new Entity[20];
-            Console.WriteLine("Adding 20 entities.....");
-            for (int i = 0; i < 20; i++)
-            {
-                testEntities2[i] = new Entity(new AABB2D(random.Next(640 - 33), random.Next(480 - 33), 32, 32));
-                Console.WriteLine(testEntities2[i].BoundingBox.X);
-                testHeap.push(testEntities2[i].BoundingBox.X, testEntities2[i]);
-            }
-
-            Console.WriteLine("Emptying....");
-            while (!testHeap.IsEmpty)
-            {
-                Console.WriteLine(testHeap.pop().BoundingBox.X);
-            }
+            result = SearchingAlgorithms.BinarySearch(989.0d, testArrayDbl);
+            Console.WriteLine(result);
+            result = SearchingAlgorithms.BinarySearch(15.0d, testArrayDbl);
+            Console.WriteLine(result + ", " + (double)testArray[result]);
+            result = SearchingAlgorithms.BinarySearch(29.0d, testArrayDbl);
+            Console.WriteLine(result);
+            result = SearchingAlgorithms.BinarySearch(390.0d, testArrayDbl);
+            Console.WriteLine(result + ", " + testArray[result]);
 
             return 0;
         }
