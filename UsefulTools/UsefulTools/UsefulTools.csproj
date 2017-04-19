@@ -39,9 +39,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AxisAlignedBoundingBox\AABB2D.cs" />
+    <Compile Include="Heap\HeapArrayImplementation.cs" />
     <Compile Include="Heap\HeapTreeImplementation.cs" />
     <Compile Include="Heap\HeapNode.cs" />
-    <Compile Include="Heap\KeyDoesNotInheritComparableException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuadTree\IHasAABB2D.cs" />
     <Compile Include="QuadTree\AbstractNode.cs" />
@@ -49,6 +49,7 @@
     <Compile Include="QuadTree\QuadTreeAABBImplementation.cs" />
     <Compile Include="QuadTree\TypeWithoutAABBException.cs" />
     <Compile Include="SearchingAndSorting\SearchingAlgorithms.cs" />
+    <Compile Include="SearchingAndSorting\SortingAlgorithms.cs" />
     <Compile Include="Test\Entity.cs" />
     <Compile Include="Test\TestProgram.cs" />
   </ItemGroup>

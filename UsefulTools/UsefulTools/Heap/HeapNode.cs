@@ -10,6 +10,7 @@ namespace UsefulTools.Heap
         private HeapNode<K, T> _parent;
         private T _element;
         private K _key;
+        private HeapPriorityType _priority;
 
         //properties
         public T Element
@@ -24,9 +25,10 @@ namespace UsefulTools.Heap
         }
 
         //constructor
-        public HeapNode(HeapNode<K, T> parent)
+        public HeapNode(HeapNode<K, T> parent, HeapPriorityType priority)
         {
             _parent = parent;
+            _priority = priority;
         }
 
         //public methods
@@ -43,12 +45,12 @@ namespace UsefulTools.Heap
                 case 1:
                     if (right)
                     {
-                        _rightChild = new HeapNode<K, T>(this);
+                        _rightChild = new HeapNode<K, T>(this, _priority);
                         _rightChild.push(key, element, level - 1, offset - 1);
                     }
                     else
                     {
-                        _leftChild = new HeapNode<K, T>(this);
+                        _leftChild = new HeapNode<K, T>(this, _priority);
                         _leftChild.push(key, element, level - 1, offset);
                     }
                     break;
@@ -98,9 +100,9 @@ namespace UsefulTools.Heap
             IComparable thisCompKey = (IComparable)Key;
             IComparable parentCompKey = (IComparable)_parent.Key;
 
-            if (HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MaxHeap &&
+            if (_priority == HeapPriorityType.MaxHeap &&
                     parentCompKey.CompareTo(thisCompKey) < 0 ||
-                    HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MinHeap &&
+                    _priority == HeapPriorityType.MinHeap &&
                     parentCompKey.CompareTo(thisCompKey) > 0)
             {
                 swap(this, _parent);
@@ -132,8 +134,8 @@ namespace UsefulTools.Heap
             IComparable leftKey = (IComparable)_leftChild.Key;
             IComparable rightKey = (IComparable)_rightChild.Key;
 
-            if (HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MaxHeap && leftKey.CompareTo(rightKey) > 0 ||
-                HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MinHeap && leftKey.CompareTo(rightKey) < 0)
+            if (_priority == HeapPriorityType.MaxHeap && leftKey.CompareTo(rightKey) > 0 ||
+                _priority == HeapPriorityType.MinHeap && leftKey.CompareTo(rightKey) < 0)
             {
                 heapDownLeft(thisKey, level);
             }
@@ -148,8 +150,8 @@ namespace UsefulTools.Heap
         {
             IComparable leftKey = (IComparable)_leftChild.Key;
 
-            if (HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MaxHeap && thisKey.CompareTo(leftKey) < 0 ||
-                HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MinHeap && thisKey.CompareTo(leftKey) > 0)
+            if (_priority == HeapPriorityType.MaxHeap && thisKey.CompareTo(leftKey) < 0 ||
+                _priority == HeapPriorityType.MinHeap && thisKey.CompareTo(leftKey) > 0)
             {
                 swap(this, _leftChild);
 
@@ -162,8 +164,8 @@ namespace UsefulTools.Heap
         {
             IComparable rightKey = (IComparable)_rightChild.Key;
 
-            if (HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MaxHeap && thisKey.CompareTo(rightKey) < 0 ||
-                HeapTreeImplementation<K, T>.PriorityType == HeapPriorityType.MinHeap && thisKey.CompareTo(rightKey) > 0)
+            if (_priority == HeapPriorityType.MaxHeap && thisKey.CompareTo(rightKey) < 0 ||
+                _priority == HeapPriorityType.MinHeap && thisKey.CompareTo(rightKey) > 0)
             {
                 swap(this, _rightChild);
                 

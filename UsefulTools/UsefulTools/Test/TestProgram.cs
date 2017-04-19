@@ -11,9 +11,10 @@ namespace UsefulTools.Test
     {
         public static int Main(string[] args)
         {
+            Random random = new Random();
+            
             //test quadtree
             //QuadTreeAABBImplementation<Entity> testTree1 = new QuadTreeAABBImplementation<Entity>(new AABB2D(0, 0, 640, 480));
-            Random random = new Random();
 
             //Entity entity1 = new Entity(new AABB2D(10, 10, 16, 16));
             //Entity entity2 = new Entity(new AABB2D(20, 20, 16, 16));
@@ -61,7 +62,7 @@ namespace UsefulTools.Test
             //});
 
             //Test Heap
-
+            //Console.WriteLine("Test Heap");
             //HeapTreeImplementation<int, Entity> testHeap = new HeapTreeImplementation<int, Entity>(HeapPriorityType.MaxHeap);
             //Entity[] testEntities = new Entity[10];
 
@@ -96,7 +97,7 @@ namespace UsefulTools.Test
             //    Console.WriteLine(testHeap.pop().BoundingBox.X);
             //}
 
-
+            Console.WriteLine("Test Binary Search");
 
             int[] testArray = new int[] {
                 1, 4, 15, 28, 35, 78, 105, 119, 149, 209,
@@ -123,7 +124,7 @@ namespace UsefulTools.Test
             result = SearchingAlgorithms.BinarySearch(989.0d, testArrayDbl);
             Console.WriteLine(result);
             result = SearchingAlgorithms.BinarySearch(15.0d, testArrayDbl);
-            Console.WriteLine(result + ", " + (double)testArray[result]);
+            Console.WriteLine(result + ", " + testArray[result]);
             result = SearchingAlgorithms.BinarySearch(29.0d, testArrayDbl);
             Console.WriteLine(result);
             result = SearchingAlgorithms.BinarySearch(390.0d, testArrayDbl);

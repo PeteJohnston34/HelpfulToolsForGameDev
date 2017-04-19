@@ -4,15 +4,15 @@ namespace UsefulTools.Heap
 {
     public enum HeapPriorityType { MaxHeap, MinHeap}
 
-    public class HeapTreeImplementation<K, T>
+    public class HeapTreeImplementation<K, T> where K : IComparable
     {
         //members
         private HeapNode<K, T> _rootNode;
         private int _nodeCount;
-        private static HeapPriorityType _priorityType;
+        private HeapPriorityType _priorityType;
 
         //properties
-        public static HeapPriorityType PriorityType { get { return _priorityType; } }
+        public HeapPriorityType PriorityType { get { return _priorityType; } }
         public int Level { get { return (int)Math.Floor(Math.Log(_nodeCount) / Math.Log(2)); } }
         public int Offset { get { return (int)(_nodeCount - (Math.Pow(2, Level) - 1)); } }
         public bool IsEmpty { get { return _rootNode == null; } }
@@ -20,14 +20,9 @@ namespace UsefulTools.Heap
         //constructor
         public HeapTreeImplementation(HeapPriorityType priorityType)
         {
-            if (!typeof(IComparable).IsAssignableFrom(typeof(K)))
-            {
-                throw new KeyDoesNotInheritComparableException();
-            }
-
-            _rootNode = new HeapNode<K, T>(null);
             _nodeCount = 0;
             _priorityType = priorityType;
+            _rootNode = new HeapNode<K, T>(null, priorityType);
         }
 
         //public methods
