@@ -130,28 +130,49 @@ namespace UsefulTools.Test
             //result = SearchingAlgorithms.BinarySearch(390.0d, testArrayDbl);
             //Console.WriteLine(result + ", " + testArray[result]);
 
-            HeapArrayImplementation <int> testHeapArray = 
-                new HeapArrayImplementation<int>(testArray, HeapArrayPriorityType.MinHeap);
+            //Test Array heap
 
-            Console.WriteLine("Popping 10");
-            for (int i = 0; i < 10; i++)
+            //HeapArrayImplementation <int> testHeapArray = 
+            //    new HeapArrayImplementation<int>(testArray, HeapArrayPriorityType.MinHeap);
+
+            //Console.WriteLine("Popping 10");
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    Console.WriteLine(testHeapArray.pop());
+            //}
+
+            //Console.WriteLine("adding 5");
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    int num = random.Next(0, 1000);
+            //    Console.WriteLine(num);
+            //    testHeapArray.push(num);
+            //}
+
+            //Console.WriteLine("emptying heap");
+            //while (!testHeapArray.IsEmpty)
+            //{
+            //    Console.WriteLine(testHeapArray.pop());
+            //}
+
+            //Test Heap Sort
+
+            int[] data = new int[100];
+            Console.WriteLine("Creating array");
+            for (int i = 0; i < 100; i++)
             {
-                Console.WriteLine(testHeapArray.pop());
+                data[i] = random.Next(0, 10000);
+                Console.WriteLine(data[i]);
             }
 
-            Console.WriteLine("adding 5");
-            for (int i = 0; i < 5; i++)
+            data = SortingAlgorithms.HeapSort<int>(data, true);
+            Console.WriteLine("Sorting.....");
+
+            for (int i = 0; i < 100; i++)
             {
-                int num = random.Next(0, 1000);
-                Console.WriteLine(num);
-                testHeapArray.push(num);
+                Console.WriteLine(data[i]);
             }
 
-            Console.WriteLine("emptying heap");
-            while (!testHeapArray.IsEmpty)
-            {
-                Console.WriteLine(testHeapArray.pop());
-            }
             return 0;
         }
 

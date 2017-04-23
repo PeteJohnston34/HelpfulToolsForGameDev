@@ -7,7 +7,7 @@
         /// </summary>
         /// <param name="num"></param>
         /// <param name="array"></param>
-        /// <returns>The index of the number is found, otherwise it returns -1</returns>
+        /// <returns>The index if the number is found, otherwise it returns -1</returns>
         public static int BinarySearch(int num, int[] array)
         {
             int index = -1;
@@ -46,7 +46,7 @@
         /// </summary>
         /// <param name="num"></param>
         /// <param name="array"></param>
-        /// <returns>The index of the number is found, otherwise it returns -1</returns>
+        /// <returns>The index if the number is found, otherwise it returns -1</returns>
         public static int BinarySearch(double num, double[] array)
         {
             int index = -1;

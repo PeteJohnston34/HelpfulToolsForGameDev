@@ -27,11 +27,9 @@ namespace UsefulTools.Heap
 
         public HeapArrayImplementation(T[] arrayToHeap, HeapArrayPriorityType priorityType) : this(priorityType)
         {
-            Console.WriteLine("Creating Heap from array");
             for (int i = 0; i < arrayToHeap.Length; i++)
             {
                 push(arrayToHeap[i]);
-                Console.WriteLine(arrayToHeap[i]);
             }
         }
 
