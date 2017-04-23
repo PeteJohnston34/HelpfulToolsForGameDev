@@ -97,7 +97,7 @@ namespace UsefulTools.Test
             //    Console.WriteLine(testHeap.pop().BoundingBox.X);
             //}
 
-            Console.WriteLine("Test Binary Search");
+            //Console.WriteLine("Test Binary Search");
 
             int[] testArray = new int[] {
                 1, 4, 15, 28, 35, 78, 105, 119, 149, 209,
@@ -105,32 +105,56 @@ namespace UsefulTools.Test
                 690, 703, 756, 767, 789, 834, 897, 903, 956, 999
             };
 
-            double[] testArrayDbl = new double[30];
+            //double[] testArrayDbl = new double[30];
 
-            for (int i = 0; i < 30; i++)
+            //for (int i = 0; i < 30; i++)
+            //{
+            //    testArrayDbl[i] = (double)testArray[i];
+            //}
+
+            //int result = SearchingAlgorithms.BinarySearch(989, testArray);
+            //Console.WriteLine(result);
+            //result = SearchingAlgorithms.BinarySearch(15, testArray);
+            //Console.WriteLine(result + ", " + testArray[result]);
+            //result = SearchingAlgorithms.BinarySearch(29, testArray);
+            //Console.WriteLine(result);
+            //result = SearchingAlgorithms.BinarySearch(390, testArray);
+            //Console.WriteLine(result + ", " + testArray[result]);
+
+            //result = SearchingAlgorithms.BinarySearch(989.0d, testArrayDbl);
+            //Console.WriteLine(result);
+            //result = SearchingAlgorithms.BinarySearch(15.0d, testArrayDbl);
+            //Console.WriteLine(result + ", " + testArray[result]);
+            //result = SearchingAlgorithms.BinarySearch(29.0d, testArrayDbl);
+            //Console.WriteLine(result);
+            //result = SearchingAlgorithms.BinarySearch(390.0d, testArrayDbl);
+            //Console.WriteLine(result + ", " + testArray[result]);
+
+            HeapArrayImplementation <int> testHeapArray = 
+                new HeapArrayImplementation<int>(testArray, HeapArrayPriorityType.MinHeap);
+
+            Console.WriteLine("Popping 10");
+            for (int i = 0; i < 10; i++)
             {
-                testArrayDbl[i] = (double)testArray[i];
+                Console.WriteLine(testHeapArray.pop());
             }
 
-            int result = SearchingAlgorithms.BinarySearch(989, testArray);
-            Console.WriteLine(result);
-            result = SearchingAlgorithms.BinarySearch(15, testArray);
-            Console.WriteLine(result + ", " + testArray[result]);
-            result = SearchingAlgorithms.BinarySearch(29, testArray);
-            Console.WriteLine(result);
-            result = SearchingAlgorithms.BinarySearch(390, testArray);
-            Console.WriteLine(result + ", " + testArray[result]);
+            Console.WriteLine("adding 5");
+            for (int i = 0; i < 5; i++)
+            {
+                int num = random.Next(0, 1000);
+                Console.WriteLine(num);
+                testHeapArray.push(num);
+            }
 
-            result = SearchingAlgorithms.BinarySearch(989.0d, testArrayDbl);
-            Console.WriteLine(result);
-            result = SearchingAlgorithms.BinarySearch(15.0d, testArrayDbl);
-            Console.WriteLine(result + ", " + testArray[result]);
-            result = SearchingAlgorithms.BinarySearch(29.0d, testArrayDbl);
-            Console.WriteLine(result);
-            result = SearchingAlgorithms.BinarySearch(390.0d, testArrayDbl);
-            Console.WriteLine(result + ", " + testArray[result]);
-
+            Console.WriteLine("emptying heap");
+            while (!testHeapArray.IsEmpty)
+            {
+                Console.WriteLine(testHeapArray.pop());
+            }
             return 0;
         }
+
+
     }
 }
